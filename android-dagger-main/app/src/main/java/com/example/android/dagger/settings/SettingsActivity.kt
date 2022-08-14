@@ -16,25 +16,34 @@
 
 package com.example.android.dagger.settings
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android.dagger.MyApplication
 import com.example.android.dagger.R
+import com.example.android.dagger.di.ActivityScope
 import com.example.android.dagger.login.LoginActivity
+import javax.inject.Inject
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var settingsViewModel: SettingsViewModel
+    @Inject
+    lateinit var settingsViewModel: SettingsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //(application as MyApplication).appComponent.inject(this)
+        val userManager = (application as MyApplication).appComponent.userManager()
+        userManager.userComponent!!.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val userManager = (application as MyApplication).userManager
+        //val userManager = (application as MyApplication).userManager
 
-        settingsViewModel = SettingsViewModel(userManager.userDataRepository!!, userManager)
+        //settingsViewModel = SettingsViewModel(userManager.userDataRepository!!, userManager)
         setupViews()
     }
 
